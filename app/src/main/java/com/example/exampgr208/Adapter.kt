@@ -2,43 +2,29 @@ package com.example.exampgr208
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.activity_main.view.*
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.image_rv_layout.view.*
-import java.lang.System.load
 
-class Adapter(val context: Context, val imageInfo:ImageInfo):
-    RecyclerView.Adapter<Adapter.ViewHolderAdapter>(){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolderAdapter {
-        val view = LayoutInflater.from(context).inflate(R.layout.image_rv_layout, parent, false)
-        return ViewHolderAdapter(view)
+class Adapter (private val dataList: MutableList<ImageApi>): RecyclerView.Adapter<Holder>() {
+
+    private lateinit var context: Context
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
+        context = parent.context
+        return Holder(LayoutInflater.from(context).inflate(R.layout.image_rv_layout, parent, false))
     }
 
-    override fun onBindViewHolder(holder: ViewHolderAdapter, position: Int) {
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        val data = dataList[position]
+        val imageView = holder.itemView.resultImages
 
-
-        //Glide.with(context.load(imageInfo.get(position).thumbnail_link).into(holder.imageResults))
-
-        /*Glide.with(this)
-            .load(postlink)
-            .into(holder.resultImages)*/
-
-    }
-
-    class ViewHolderAdapter(itemView: View) :RecyclerView.ViewHolder(itemView) {
-        val recyclerView: Any
-            get() {
-                TODO()
-            }
-        val imageResults: ImageView = itemView.findViewById(R.id.iv_pick_image)
+        Picasso.get()
+            .load(data.image_link)
+            .into(imageView)
     }
 
     override fun getItemCount(): Int {
-        return imageInfo.size
+        return dataList.size
     }
-
 }
